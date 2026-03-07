@@ -71,7 +71,7 @@ def show_subtitle_lang_menu():
 
 def show_embed_options_menu():
     title = "Embed options: Choose what to embed (pick one or none)"
-    options = ["Embed subtitles", "Embed thumbnail", "Embed metadata", "None"]
+    options = ["Embed everything", "Embed subtitles", "Embed thumbnail", "Embed metadata", "None"]
     return _pick_option(options, title)
 
 def show_sponsorblock_menu():

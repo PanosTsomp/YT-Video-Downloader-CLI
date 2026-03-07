@@ -3,7 +3,7 @@ name = "yt-video-downloader-cli"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.13,<3.14"
 dependencies = [
     "pick>=2.4.0",
     "yt-dlp>=2026.3.3",

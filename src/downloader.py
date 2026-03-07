@@ -19,6 +19,13 @@ PLAYLIST_CHOICES = {
     "Download Playlist only Video",
     "Download Playlist Video and Audio",
 }
+ELEMENT_DOWNLOAD_CHOICES = {"Download Subtitles", "Download Thumbnail", "Download Metadata"}
+EMBED_ELEMENT_CHOICES = {
+    "Embed subtitles",
+    "Embed thumbnail",
+    "Embed metadata",
+    "Embed everything",
+}
 
 
 def _quality_kbps(value: str | None) -> str | None:
@@ -59,12 +66,40 @@ def _video_format_selector(
     return f"{best_video}/{fallback_video}/{fallback_best}"
 
 
+def _source_prefix(source: str | None) -> str:
+    if source == "YouTube":
+        return "YouTube/"
+    if source == "YouTube Music":
+        return "YouTube Music/"
+    return ""
+
+
+def _outtmpl_for_download(source: str | None, put_in_elements_folder: bool) -> str:
+    source_prefix = _source_prefix(source)
+    base_name = "%(title)s [%(id)s]"
+    if put_in_elements_folder:
+        return f"{source_prefix}Elements/{base_name}/{base_name}.%(ext)s"
+    return f"{source_prefix}{base_name}.%(ext)s"
+
+
 def _apply_embed_option(opts: dict[str, Any], embed_option: str | None) -> None:
     if embed_option == "Embed subtitles":
+        opts["writesubtitles"] = True
+        opts["writeautomaticsub"] = True
+        opts.setdefault("subtitleslangs", ["all"])
         opts["embedsubtitles"] = True
     elif embed_option == "Embed thumbnail":
+        opts["writethumbnail"] = True
         opts["embedthumbnail"] = True
     elif embed_option == "Embed metadata":
+        opts["addmetadata"] = True
+    elif embed_option == "Embed everything":
+        opts["writesubtitles"] = True
+        opts["writeautomaticsub"] = True
+        opts.setdefault("subtitleslangs", ["all"])
+        opts["writethumbnail"] = True
+        opts["embedsubtitles"] = True
+        opts["embedthumbnail"] = True
         opts["addmetadata"] = True
 
 
@@ -83,15 +118,15 @@ def build_ydl_opts(
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
 
+    put_in_elements_folder = (
+        menu_choice in ELEMENT_DOWNLOAD_CHOICES
+        or (embed_option in EMBED_ELEMENT_CHOICES)
+    )
     opts: dict[str, Any] = {
         "paths": {"home": str(output_path)},
-        "outtmpl": "%(title)s [%(id)s].%(ext)s",
+        "outtmpl": _outtmpl_for_download(source, put_in_elements_folder),
         "noplaylist": menu_choice not in PLAYLIST_CHOICES,
     }
-    if source == "YouTube":
-        opts["outtmpl"] = "YouTube/%(title)s [%(id)s].%(ext)s"
-    elif source == "YouTube Music":
-        opts["outtmpl"] = "YouTube Music/%(title)s [%(id)s].%(ext)s"
 
     if menu_choice in AUDIO_ONLY_CHOICES:
         opts["format"] = "bestaudio/best"

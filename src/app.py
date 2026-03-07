@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from src.config import AppConfig, load_config, save_config
+from src.config import AppConfig, load_config
 from src.downloader import (
     build_ydl_opts,
     perform_batch_download,
@@ -9,7 +9,6 @@ from src.downloader import (
 )
 from src.menus import (
     get_batch_file_input,
-    get_output_path_input,
     get_url_input,
     show_audio_format_menu,
     show_audio_quality_menu,
@@ -40,24 +39,14 @@ SPONSORBLOCK_MENU_CHOICES = AUDIO_ONLY_CHOICES | VIDEO_ONLY_CHOICES | VIDEO_WITH
 
 
 def _show_about() -> None:
-    print("Personal downloader powered by yt-dlp (YouTube + YouTube Music). \n MADE BY Panagiotis Ilias Tsompanoglou :: https://github.com/PanosTsomp")
+    print("Personal downloader powered by yt-dlp (YouTube + YouTube Music).")
+    print("Made by Panagiotis Ilias Tsompanoglou :: https://github.com/PanosTsomp")
+    input("Press Enter to return to the startup menu...")
 
 
-def _handle_options(config: AppConfig) -> None:
-    print("\nOptions")
-    config.output_dir = get_output_path_input(default_path=config.output_dir)
-
-    if input("Change default audio format? (y/N): ").strip().lower() == "y":
-        config.default_audio_format = show_audio_format_menu()
-    if input("Change default audio quality? (y/N): ").strip().lower() == "y":
-        config.default_audio_quality = show_audio_quality_menu()
-    if input("Change default video format? (y/N): ").strip().lower() == "y":
-        config.default_video_format = show_video_format_menu()
-    if input("Change default video quality? (y/N): ").strip().lower() == "y":
-        config.default_video_quality = show_video_quality_menu()
-
-    save_config(config)
-    print("Options saved.\n")
+def _handle_options(_config: AppConfig) -> None:
+    print("\nOptions are not implemented yet.")
+    input("Press Enter to return to the startup menu...")
 
 
 def _build_download_inputs(menu_choice: str, config: AppConfig) -> dict[str, object]:
