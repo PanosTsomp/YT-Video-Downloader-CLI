@@ -1,5 +1,13 @@
 from pick import pick
 
+PICK_INDICATOR = "=>"
+
+
+def _pick_option(options, title):
+    option, _ = pick(options, title, indicator=PICK_INDICATOR)
+    return option
+
+
 def show_startup_menu():
     title = "Please Choose An Option:"
     options = [
@@ -8,8 +16,7 @@ def show_startup_menu():
         "About us",
         "Exit"
     ]
-    option, _ = pick(options, title)
-    return option
+    return _pick_option(options, title)
 
 def show_main_menu():
     title = "What Do You Want To Do?"
@@ -27,52 +34,57 @@ def show_main_menu():
         "Batch Download from File",
         "Update yt-dlp"
     ]
-    option, _ = pick(options, title)
-    return option
+    return _pick_option(options, title)
+
+def show_source_menu():
+    title = "Where is this URL from?"
+    options = [
+        "YouTube",
+        "YouTube Music"
+    ]
+    return _pick_option(options, title)
 
 def show_audio_format_menu():
     title = "What type of file format do you want the Audio to be?"
     options = ["mp3", "opus", "m4a", "wav", "best"]
-    option, _ = pick(options, title)
-    return option
+    return _pick_option(options, title)
 
 def show_audio_quality_menu():
     title = "What audio quality (bitrate) do you want? (Higher is better, but larger file)"
     options = ["best", "256k", "192k", "128k", "64k"]
-    option, _ = pick(options, title)
-    return option
+    return _pick_option(options, title)
 
 def show_video_quality_menu():
     title = "What video quality do you want?"
     options = ["best", "1080p", "720p", "480p", "360p", "240p", "worst"]
-    option, _ = pick(options, title)
-    return option
+    return _pick_option(options, title)
 
 def show_video_format_menu():
     title = "What video format do you want?"
     options = ["mp4", "webm", "mkv", "best"]
-    option, _ = pick(options, title)
-    return option
+    return _pick_option(options, title)
 
 def show_subtitle_lang_menu():
     title = "What subtitle language do you want? (or 'all' for all available)"
     options = ["en", "es", "fr", "de", "all", "none"]
-    option, _ = pick(options, title)
-    return option
+    return _pick_option(options, title)
 
 def show_embed_options_menu():
-    title = "Embed options: Choose what to embed (multi-select if needed, but for simplicity, pick one or none)"
+    title = "Embed options: Choose what to embed (pick one or none)"
     options = ["Embed subtitles", "Embed thumbnail", "Embed metadata", "None"]
-    option, _ = pick(options, title)
-    return option
+    return _pick_option(options, title)
 
 def show_sponsorblock_menu():
     title = "Remove sponsors/ads using SponsorBlock?"
     options = ["Yes (remove all)", "No"]
-    option, _ = pick(options, title)
+    option = _pick_option(options, title)
     return option == "Yes (remove all)"
 
-def get_url_input():
+def get_url_input(source=None):
+    if source == "YouTube":
+        return input("Enter YouTube URL (or 'ytsearch:query' for search): ")
+    if source == "YouTube Music":
+        return input("Enter YouTube Music URL (or 'ytsearch:query' for search): ")
     return input("Enter URL (or 'ytsearch:query' for search): ")
 
 def get_output_path_input(default_path="downloads"):
