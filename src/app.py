@@ -22,6 +22,8 @@ from src.menus import (
     show_video_quality_menu,
 )
 
+
+
 AUDIO_ONLY_CHOICES = {"Download Audio", "Download Playlist only Audio"}
 VIDEO_ONLY_CHOICES = {"Download Video", "Download Playlist only Video"}
 VIDEO_WITH_AUDIO_CHOICES = {
@@ -136,7 +138,7 @@ def _run_download_menu(config: AppConfig) -> None:
         return
     perform_download(url, opts)
 
-
+# This is the entry point of the app
 def run_cli() -> None:
     config = load_config()
     print("\nWelcome to YouTube Video Downloader CLI! (YVD-CLI)\n")
