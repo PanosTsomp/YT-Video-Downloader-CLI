@@ -39,13 +39,14 @@ EMBED_MENU_CHOICES = (
 )
 SPONSORBLOCK_MENU_CHOICES = AUDIO_ONLY_CHOICES | VIDEO_ONLY_CHOICES | VIDEO_WITH_AUDIO_CHOICES
 
-
+# AboutUs Text
 def _show_about() -> None:
-    print("Personal downloader powered by yt-dlp (YouTube + YouTube Music).")
+    print("Personal downloader powered by yt-dlp (YouTube + YouTube Music).\n\n")
     print("Made by Panagiotis Ilias Tsompanoglou :: https://github.com/PanosTsomp")
     input("Press Enter to return to the startup menu...")
 
-
+# Options End point 
+#TODO Implement Options
 def _handle_options(_config: AppConfig) -> None:
     print("\nOptions are not implemented yet.")
     input("Press Enter to return to the startup menu...")
@@ -99,9 +100,9 @@ def _build_download_inputs(menu_choice: str, config: AppConfig) -> dict[str, obj
         "sponsorblock": sponsorblock,
     }
 
-
+# Runs Download Menu
 def _run_download_menu(config: AppConfig) -> None:
-    menu_choice = show_main_menu()
+    menu_choice = show_main_menu() # show the Menu from menus.py
     if menu_choice == "Update yt-dlp":
         update_yt_dlp()
         return
@@ -147,12 +148,13 @@ def run_cli() -> None:
         startup_choice = show_startup_menu()
 
         if startup_choice == "Exit":
-            break
+            break # Breaks the CLI and ends the program
         if startup_choice == "Menu":
             _run_download_menu(config)
         elif startup_choice == "Options":
             _handle_options(config)
         elif startup_choice == "About us":
             _show_about()
+        #TODO Implement a help option
 
     print("Goodbye!")

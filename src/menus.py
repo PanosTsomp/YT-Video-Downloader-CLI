@@ -7,7 +7,7 @@ def _pick_option(options, title):
     option, _ = pick(options, title, indicator=PICK_INDICATOR)
     return option
 
-
+# Returns the chosen option from the user 
 def show_startup_menu():
     title = "Please Choose An Option:"
     options = [
@@ -18,6 +18,7 @@ def show_startup_menu():
     ]
     return _pick_option(options, title)
 
+# Shows the main menu of the app
 def show_main_menu():
     title = "What Do You Want To Do?"
     options = [
