@@ -229,7 +229,7 @@ def perform_batch_download(batch_file: str, ydl_opts: dict[str, Any]) -> None:
     except DownloadError as exc:
         print(f"Batch download failed: {exc}")
 
-
+# Updates_YT_DLP
 def update_yt_dlp() -> None:
     print("Updating yt-dlp...")
     result = subprocess.run(
