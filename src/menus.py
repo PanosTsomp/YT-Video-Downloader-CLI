@@ -15,7 +15,7 @@ from pick import pick
 
 PICK_INDICATOR = "=>"
 
-# When 
+# When you get the options we call the pick method so the user can choose
 def _pick_option(options, title):
     option, _ = pick(options, title, indicator=PICK_INDICATOR)
     return option
@@ -92,7 +92,7 @@ def show_subtitle_lang_menu():
 # Tell me what you want to Embed
 def show_embed_options_menu():
     title = "Embed options: Choose what to embed (pick one or none)"
-    options = ["Embed everything", "Embed subtitles", "Embed thumbnail", "Embed metadata", "None"]
+    options = ["None", "Embed everything", "Embed subtitles", "Embed thumbnail", "Embed metadata"]
     return _pick_option(options, title)
 
 # Tell me if you want to remove the Sponsored parts 
@@ -103,13 +103,35 @@ def show_sponsorblock_menu():
     return option == "Yes (remove all)"
 
 # Enter the url OR the name
-#TODO Type just the name instead of ytsearch:query
 def get_url_input(source=None):
+    def _normalize_url_or_search(value):
+        query = value.strip()
+        if not query:
+            return query
+
+        lowered = query.lower()
+        if lowered.startswith("ytsearch:") or lowered.startswith("ytmusicsearch:"):
+            return query
+
+        if (
+            "://" in query
+            or lowered.startswith("www.")
+            or lowered.startswith("youtube.com/")
+            or lowered.startswith("m.youtube.com/")
+            or lowered.startswith("music.youtube.com/")
+            or lowered.startswith("youtu.be/")
+        ):
+            return query
+
+        if source == "YouTube Music":
+            return f"ytmusicsearch:{query}"
+        return f"ytsearch:{query}"
+
     if source == "YouTube":
-        return input("Enter YouTube URL (or 'ytsearch:query' for search): ")
+        return _normalize_url_or_search(input("Enter YouTube URL or video name: "))
     if source == "YouTube Music":
-        return input("Enter YouTube Music URL (or 'ytsearch:query' for search): ")
-    return input("Enter URL (or 'ytsearch:query' for search): ")
+        return _normalize_url_or_search(input("Enter YouTube Music URL or song name: "))
+    return _normalize_url_or_search(input("Enter URL or name: "))
 
 # Choose the output destination
 def get_output_path_input(default_path="downloads"):

@@ -20,8 +20,14 @@ from typing import Any
 import yt_dlp
 from yt_dlp.utils import DownloadError
 
-AUDIO_ONLY_CHOICES = {"Download Audio", "Download Playlist only Audio"}
-VIDEO_ONLY_CHOICES = {"Download Video", "Download Playlist only Video"}
+AUDIO_ONLY_CHOICES = {
+    "Download Audio", 
+    "Download Playlist only Audio"
+}
+VIDEO_ONLY_CHOICES = {
+    "Download Video", 
+    "Download Playlist only Video"
+}
 VIDEO_WITH_AUDIO_CHOICES = {
     "Download Audio and Video",
     "Download Playlist Video and Audio",
@@ -31,7 +37,10 @@ PLAYLIST_CHOICES = {
     "Download Playlist only Video",
     "Download Playlist Video and Audio",
 }
-ELEMENT_DOWNLOAD_CHOICES = {"Download Subtitles", "Download Thumbnail", "Download Metadata"}
+ELEMENT_DOWNLOAD_CHOICES = {"Download Subtitles", 
+    "Download Thumbnail", 
+    "Download Metadata"
+}
 EMBED_ELEMENT_CHOICES = {
     "Embed subtitles",
     "Embed thumbnail",
@@ -94,11 +103,26 @@ def _outtmpl_for_download(source: str | None, put_in_elements_folder: bool) -> s
     return f"{source_prefix}{base_name}.%(ext)s"
 
 
-def _apply_embed_option(opts: dict[str, Any], embed_option: str | None) -> None:
+def _subtitle_langs(subtitle_lang: str | None) -> list[str] | None:
+    if not subtitle_lang or subtitle_lang == "none":
+        return None
+    if subtitle_lang == "all":
+        return ["all"]
+    return [subtitle_lang]
+
+
+def _apply_embed_option(
+    opts: dict[str, Any],
+    embed_option: str | None,
+    subtitle_lang: str | None,
+) -> None:
     if embed_option == "Embed subtitles":
+        langs = _subtitle_langs(subtitle_lang)
+        if not langs:
+            return
         opts["writesubtitles"] = True
         opts["writeautomaticsub"] = True
-        opts.setdefault("subtitleslangs", ["all"])
+        opts["subtitleslangs"] = langs
         opts["embedsubtitles"] = True
     elif embed_option == "Embed thumbnail":
         opts["writethumbnail"] = True
@@ -106,11 +130,14 @@ def _apply_embed_option(opts: dict[str, Any], embed_option: str | None) -> None:
     elif embed_option == "Embed metadata":
         opts["addmetadata"] = True
     elif embed_option == "Embed everything":
-        opts["writesubtitles"] = True
-        opts["writeautomaticsub"] = True
-        opts.setdefault("subtitleslangs", ["all"])
+        langs = _subtitle_langs(subtitle_lang)
+        if langs:
+            opts["writesubtitles"] = True
+            opts["writeautomaticsub"] = True
+            opts["subtitleslangs"] = langs
         opts["writethumbnail"] = True
-        opts["embedsubtitles"] = True
+        if langs:
+            opts["embedsubtitles"] = True
         opts["embedthumbnail"] = True
         opts["addmetadata"] = True
 
@@ -192,6 +219,8 @@ def build_ydl_opts(
     elif menu_choice == "Download Metadata":
         opts["skip_download"] = True
         opts["writeinfojson"] = True
+        opts["clean_infojson"] = True
+        opts["writedescription"] = True
 
     elif menu_choice == "Batch Download from File":
         opts["format"] = _video_format_selector(
@@ -202,7 +231,7 @@ def build_ydl_opts(
         if video_format and video_format != "best":
             opts["merge_output_format"] = video_format
 
-    _apply_embed_option(opts, embed_option)
+    _apply_embed_option(opts, embed_option, subtitle_lang)
 
     if sponsorblock:
         opts["sponsorblock_remove"] = ["all"]
@@ -242,6 +271,7 @@ def perform_batch_download(batch_file: str, ydl_opts: dict[str, Any]) -> None:
         print(f"Batch download failed: {exc}")
 
 # Updates_YT_DLP
+#TODO I use UV for this project so the funtion doesn't work. And If someone does not have UV it wont be able to update. May this funtion in not nessesary
 def update_yt_dlp() -> None:
     print("Updating yt-dlp...")
     result = subprocess.run(

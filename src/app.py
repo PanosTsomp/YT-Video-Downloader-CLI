@@ -44,7 +44,7 @@ EMBED_MENU_CHOICES = (
     AUDIO_ONLY_CHOICES
     | VIDEO_ONLY_CHOICES
     | VIDEO_WITH_AUDIO_CHOICES
-    | {"Download Subtitles", "Download Chapters"}
+    | {"Download Chapters"}
 )
 SPONSORBLOCK_MENU_CHOICES = AUDIO_ONLY_CHOICES | VIDEO_ONLY_CHOICES | VIDEO_WITH_AUDIO_CHOICES
 
@@ -91,6 +91,8 @@ def _build_download_inputs(menu_choice: str, config: AppConfig) -> dict[str, obj
     embed_option = None
     if menu_choice in EMBED_MENU_CHOICES:
         embed_option = show_embed_options_menu()
+        if subtitle_lang is None and embed_option in {"Embed subtitles", "Embed everything"}:
+            subtitle_lang = show_subtitle_lang_menu()
 
     sponsorblock = False
     if menu_choice in SPONSORBLOCK_MENU_CHOICES:
