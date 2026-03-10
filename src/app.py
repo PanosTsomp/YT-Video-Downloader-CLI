@@ -1,3 +1,15 @@
+"""
+Main entry point for the YouTube Video Downloader CLI.
+
+This module controls the program flow, handles the startup menu,
+coordinates user input from menus.py, loads configuration from
+config.py, and triggers downloads through downloader.py.
+
+YouTube Video Downloader CLI
+Author: PANAGIOTIS ILIAS TSOMPANOGLOU 
+GitHub:  https://github.com/PanosTsomp
+License: MIT
+"""
 from __future__ import annotations
 
 from src.config import AppConfig, load_config

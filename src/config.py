@@ -1,3 +1,15 @@
+"""
+Configuration management for the YouTube Video Downloader.
+
+This module defines the AppConfig data structure and handles
+loading and saving configuration values such as default
+download formats, output directories, and user preferences.
+
+YouTube Video Downloader CLI
+Author: PANAGIOTIS ILIAS TSOMPANOGLOU 
+GitHub:  https://github.com/PanosTsomp
+License: MIT
+"""
 from __future__ import annotations
 
 import json

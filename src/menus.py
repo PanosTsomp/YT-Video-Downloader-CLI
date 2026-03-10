@@ -1,8 +1,21 @@
+"""
+Command-line menu system for the YouTube Video Downloader.
+
+This module contains all user interface prompts and menus,
+including the startup menu, download menu, and option
+selection prompts. It collects user input and returns
+structured choices to the main application.
+
+YouTube Video Downloader CLI
+Author: PANAGIOTIS ILIAS TSOMPANOGLOU 
+GitHub:  https://github.com/PanosTsomp
+License: MIT
+"""
 from pick import pick
 
 PICK_INDICATOR = "=>"
 
-
+# When 
 def _pick_option(options, title):
     option, _ = pick(options, title, indicator=PICK_INDICATOR)
     return option
@@ -98,9 +111,11 @@ def get_url_input(source=None):
         return input("Enter YouTube Music URL (or 'ytsearch:query' for search): ")
     return input("Enter URL (or 'ytsearch:query' for search): ")
 
+# Choose the output destination
 def get_output_path_input(default_path="downloads"):
     path = input(f"Enter download path (default: {default_path}): ").strip()
     return path if path else default_path
 
+# Tell me if you want a batch file download
 def get_batch_file_input():
     return input("Enter path to batch file (list of URLs): ")

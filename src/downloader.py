@@ -1,3 +1,15 @@
+"""
+Download engine for the YouTube Video Downloader.
+
+This module builds yt-dlp option dictionaries based on user
+choices and executes downloads using the yt-dlp library.
+It also supports batch downloads and updating yt-dlp.
+
+YouTube Video Downloader CLI
+Author: PANAGIOTIS ILIAS TSOMPANOGLOU 
+GitHub:  https://github.com/PanosTsomp
+License: MIT
+"""
 from __future__ import annotations
 
 import subprocess
