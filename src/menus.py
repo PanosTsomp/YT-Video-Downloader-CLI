@@ -25,7 +25,6 @@ def show_startup_menu():
     title = "Please Choose An Option:"
     options = [
         "Menu",
-        "Options",
         "About us",
         "Exit"
     ]

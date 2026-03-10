@@ -54,13 +54,6 @@ def _show_about() -> None:
     print("Made by Panagiotis Ilias Tsompanoglou :: https://github.com/PanosTsomp")
     input("Press Enter to return to the startup menu...")
 
-# Options End point 
-#TODO Implement Options
-def _handle_options(_config: AppConfig) -> None:
-    print("\nOptions are not implemented yet.")
-    input("Press Enter to return to the startup menu...")
-
-
 def _build_download_inputs(menu_choice: str, config: AppConfig) -> dict[str, object]:
     source = None
     url = None
@@ -162,8 +155,6 @@ def run_cli() -> None:
             break # Breaks the CLI and ends the program
         if startup_choice == "Menu":
             _run_download_menu(config)
-        elif startup_choice == "Options":
-            _handle_options(config)
         elif startup_choice == "About us":
             _show_about()
         #TODO Implement a help option
