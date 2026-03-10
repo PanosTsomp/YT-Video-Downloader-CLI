@@ -60,26 +60,26 @@ def show_source_menu():
 
 # Tell me the audio format you want
 def show_audio_format_menu():
-    title = "What type of file format do you want the Audio to be?"
-    options = ["mp3", "opus", "m4a", "wav", "best"]
+    title = "What audio format do you want? (choose 'auto' for best available source)"
+    options = ["mp3", "opus", "m4a", "wav", "auto"]
     return _pick_option(options, title)
 
 # Tell me the Audio Quality you want
 def show_audio_quality_menu():
     title = "What audio quality (bitrate) do you want? (Higher is better, but larger file)"
-    options = ["best", "256k", "192k", "128k", "64k"]
+    options = ["auto", "256k", "192k", "128k", "64k"]
     return _pick_option(options, title)
 
 # Tell me the Video Quality you want
 def show_video_quality_menu():
     title = "What video quality do you want?"
-    options = ["best", "1080p", "720p", "480p", "360p", "240p", "worst"]
+    options = ["auto", "1080p", "720p", "480p", "360p", "240p", "worst"]
     return _pick_option(options, title)
 
 # Tell me the video Format you want
 def show_video_format_menu():
-    title = "What video format do you want?"
-    options = ["mp4", "webm", "mkv", "best"]
+    title = "What video format do you want? (choose 'auto' for best available source)"
+    options = ["mp4", "webm", "mkv", "auto"]
     return _pick_option(options, title)
 
 # Tell me if you want to install subs

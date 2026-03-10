@@ -56,3 +56,4 @@ def save_config(config: AppConfig, path: str | Path = CONFIG_FILE) -> None:
         json.dumps(asdict(config), indent=2, sort_keys=True),
         encoding="utf-8",
     )
+

@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import subprocess
 import sys
+from shutil import which
 from pathlib import Path
 from typing import Any
 
@@ -270,15 +271,22 @@ def perform_batch_download(batch_file: str, ydl_opts: dict[str, Any]) -> None:
     except DownloadError as exc:
         print(f"Batch download failed: {exc}")
 
-# Updates_YT_DLP
-#TODO I use UV for this project so the funtion doesn't work. And If someone does not have UV it wont be able to update. May this funtion in not nessesary
 def update_yt_dlp() -> None:
     print("Updating yt-dlp...")
-    result = subprocess.run(
-        [sys.executable, "-m", "pip", "install", "--upgrade", "yt-dlp"],
-        check=False,
-    )
-    if result.returncode == 0:
-        print("yt-dlp updated successfully.")
-    else:
-        print("yt-dlp update failed.")
+    commands: list[tuple[list[str], str]] = []
+    if which("uv"):
+        commands.append((["uv", "pip", "install", "--upgrade", "yt-dlp"], "uv"))
+    commands.append(([sys.executable, "-m", "pip", "install", "--upgrade", "yt-dlp"], "pip"))
+    if which("yt-dlp"):
+        commands.append((["yt-dlp", "-U"], "yt-dlp binary"))
+
+    for command, label in commands:
+        try:
+            result = subprocess.run(command, check=False)
+        except OSError:
+            continue
+        if result.returncode == 0:
+            print(f"yt-dlp updated successfully via {label}.")
+            return
+
+    print("yt-dlp update failed. Install/update it manually for your environment.")

@@ -48,6 +48,13 @@ EMBED_MENU_CHOICES = (
 )
 SPONSORBLOCK_MENU_CHOICES = AUDIO_ONLY_CHOICES | VIDEO_ONLY_CHOICES | VIDEO_WITH_AUDIO_CHOICES
 
+
+def _normalize_auto_choice(value: str | None) -> str | None:
+    if not value:
+        return value
+    return "best" if value == "auto" else value
+
+
 # AboutUs Text
 def _show_about() -> None:
     print("Personal downloader powered by yt-dlp (YouTube + YouTube Music).\n\n")
@@ -68,14 +75,14 @@ def _build_download_inputs(menu_choice: str, config: AppConfig) -> dict[str, obj
     audio_format = None
     audio_quality = None
     if menu_choice in AUDIO_ONLY_CHOICES:
-        audio_format = show_audio_format_menu() or config.default_audio_format
-        audio_quality = show_audio_quality_menu() or config.default_audio_quality
+        audio_format = _normalize_auto_choice(show_audio_format_menu()) or config.default_audio_format
+        audio_quality = _normalize_auto_choice(show_audio_quality_menu()) or config.default_audio_quality
 
     video_format = None
     video_quality = None
     if menu_choice in VIDEO_MENU_CHOICES:
-        video_format = show_video_format_menu() or config.default_video_format
-        video_quality = show_video_quality_menu() or config.default_video_quality
+        video_format = _normalize_auto_choice(show_video_format_menu()) or config.default_video_format
+        video_quality = _normalize_auto_choice(show_video_quality_menu()) or config.default_video_quality
 
     subtitle_lang = None
     if menu_choice == "Download Subtitles":
