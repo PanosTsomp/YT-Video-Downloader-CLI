@@ -147,3 +147,10 @@ run.sh                 # Non-UV run helper
 - The app stores config in `.yvd-config.json` (when used).
 - Some YouTube extractions may require a JavaScript runtime depending on `yt-dlp` changes.
 - If subtitle downloads hit rate limits (`HTTP 429`), retry later or avoid `all` subtitle languages.
+
+
+
+YouTube Video Downloader CLI
+Author: PANAGIOTIS ILIAS TSOMPANOGLOU 
+GitHub:  https://github.com/PanosTsomp
+License: MIT
