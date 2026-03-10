@@ -26,10 +26,7 @@ from src.menus import (
 
 AUDIO_ONLY_CHOICES = {"Download Audio", "Download Playlist only Audio"}
 VIDEO_ONLY_CHOICES = {"Download Video", "Download Playlist only Video"}
-VIDEO_WITH_AUDIO_CHOICES = {
-    "Download Audio and Video",
-    "Download Playlist Video and Audio",
-}
+VIDEO_WITH_AUDIO_CHOICES = {"Download Audio and Video","Download Playlist Video and Audio"}
 VIDEO_MENU_CHOICES = VIDEO_ONLY_CHOICES | VIDEO_WITH_AUDIO_CHOICES | {"Download Chapters"}
 EMBED_MENU_CHOICES = (
     AUDIO_ONLY_CHOICES
@@ -107,7 +104,7 @@ def _run_download_menu(config: AppConfig) -> None:
         update_yt_dlp()
         return
 
-    inputs = _build_download_inputs(menu_choice, config)
+    inputs = _build_download_inputs(menu_choice, config) 
     if menu_choice == "Download Subtitles" and inputs["subtitle_lang"] == "none":
         print("Subtitles download cancelled: no language selected.")
         return
