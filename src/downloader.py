@@ -96,8 +96,15 @@ def _source_prefix(source: str | None) -> str:
     return ""
 
 
-def _outtmpl_for_download(source: str | None, put_in_elements_folder: bool) -> str:
+def _outtmpl_for_download(
+    source: str | None, put_in_elements_folder: bool, is_playlist: bool = False
+) -> str:
     source_prefix = _source_prefix(source)
+    if is_playlist:
+        video_name = "%(playlist_title)s/%(playlist_index)02d - %(title)s [%(id)s]"
+        if put_in_elements_folder:
+            return f"{source_prefix}Elements/{video_name}.%(ext)s"
+        return f"{source_prefix}{video_name}.%(ext)s"
     base_name = "%(title)s [%(id)s]"
     if put_in_elements_folder:
         return f"{source_prefix}Elements/{base_name}/{base_name}.%(ext)s"
@@ -162,11 +169,17 @@ def build_ydl_opts(
         menu_choice in ELEMENT_DOWNLOAD_CHOICES
         or (embed_option in EMBED_ELEMENT_CHOICES)
     )
+    is_playlist = menu_choice in PLAYLIST_CHOICES
     opts: dict[str, Any] = {
         "paths": {"home": str(output_path)},
-        "outtmpl": _outtmpl_for_download(source, put_in_elements_folder),
-        "noplaylist": menu_choice not in PLAYLIST_CHOICES,
+        "outtmpl": _outtmpl_for_download(source, put_in_elements_folder, is_playlist),
+        "noplaylist": not is_playlist,
+        "retries": 10,
+        "fragment_retries": 10,
+        "socket_timeout": 30,
     }
+    if is_playlist or menu_choice == "Batch Download from File":
+        opts["ignoreerrors"] = True
 
     if menu_choice in AUDIO_ONLY_CHOICES:
         opts["format"] = "bestaudio/best"
